@@ -24,19 +24,23 @@ server.on("request", async function(req, res){
 	})
 	let headers = req.headers
 	let accesskey = headers["access-key"]
+	let IP = req.socket.localAddress
 	
 	if (typeof(accesskey) !== "string"){
+		console.log("Request from " + IP + ", HTTP 401")
 		res.statusCode = 401
 		res.end()
 		return
 	}
 	let accessKeyBuffer = Buffer.from(accesskey)
 	if (accessKeyBuffer.length !== AccessKey.length || !crypto.timingSafeEqual(accessKeyBuffer, AccessKey)){
+		console.log("Request from " + IP + ", HTTP 403")
 		res.statusCode = 403
 		res.end()
 		return
 	}
 	if (req.method !== "POST"){
+		console.log("Request from " + IP + ", HTTP 405")
 		res.statusCode = 405
 		res.end()
 		return
@@ -51,21 +55,25 @@ server.on("request", async function(req, res){
 		try {
 			parsed = JSON.parse(data)
 		} catch(err){
+			console.log("Request from " + IP + ", HTTP 422")
 			res.statusCode = 422
 			res.end()
 			return
 		}
 		if (typeof(parsed) !== "object"){
+			console.log("Request from " + IP + ", HTTP 422")
 			res.statusCode = 422
 			res.end()
 			return
 		}
 		let response = await request(parsed)
 		if (response == undefined){
+			console.log("Request from " + IP + ", HTTP 500")
 			res.statusCode = 500
 			res.end()
 			return
 		}
+		console.log("Request from " + IP + " requested " + data.url)
 		res.statusCode = 200
 		res.end(JSON.stringify({
 			["status"]: response.status,
