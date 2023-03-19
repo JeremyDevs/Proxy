@@ -1,0 +1,13 @@
+{
+  "name": "Roblox Datastore API",
+  "description": "A nodejs proxy server",
+  "repository": "https://github.com/JeremyDevs/Proxy",
+  "keywords": [],
+  "env": {
+    "ACCESS_KEY": {
+      "description": "The access key to the proxy",
+      "required": "true",
+      "generator": "secret"
+    },
+  }
+}
