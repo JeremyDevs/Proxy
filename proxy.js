@@ -24,7 +24,7 @@ server.on("request", async function(req, res){
 	})
 	let headers = req.headers
 	let accesskey = headers["access-key"]
-	let IP = req.socket.localAddress
+	let IP = req.socket.remoteAddress
 	
 	if (typeof(accesskey) !== "string"){
 		console.log("Request from " + IP + ", HTTP 401")
@@ -73,7 +73,7 @@ server.on("request", async function(req, res){
 			res.end()
 			return
 		}
-		console.log("Request from " + IP + " requested " + data.url)
+		console.log("Request from " + IP + ", requested " + parsed.url)
 		res.statusCode = 200
 		res.end(JSON.stringify({
 			["status"]: response.status,
