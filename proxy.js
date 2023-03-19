@@ -26,18 +26,20 @@ server.on("request", async function(req, res){
 	let accesskey = headers["access-key"]
 	let IP = req.socket.remoteAddress
 	
-	if (typeof(accesskey) !== "string"){
-		console.log("Request from " + IP + ", HTTP 401")
-		res.statusCode = 401
-		res.end()
-		return
-	}
-	let accessKeyBuffer = Buffer.from(accesskey)
-	if (accessKeyBuffer.length !== AccessKey.length || !crypto.timingSafeEqual(accessKeyBuffer, AccessKey)){
-		console.log("Request from " + IP + ", HTTP 403")
-		res.statusCode = 403
-		res.end()
-		return
+	if (AccessKey){
+		if (typeof(accesskey) !== "string"){
+			console.log("Request from " + IP + ", HTTP 401")
+			res.statusCode = 401
+			res.end()
+			return
+		}
+		let accessKeyBuffer = Buffer.from(accesskey)
+		if (accessKeyBuffer.length !== AccessKey.length || !crypto.timingSafeEqual(accessKeyBuffer, AccessKey)){
+			console.log("Request from " + IP + ", HTTP 403")
+			res.statusCode = 403
+			res.end()
+			return
+		}
 	}
 	if (req.method !== "POST"){
 		console.log("Request from " + IP + ", HTTP 405")
