@@ -2,7 +2,7 @@
   "name": "Proxy",
   "version": "1.0.0",
   "description": "A nodejs proxy server",
-  "main": "server.js",
+  "main": "proxy.js",
   "dependencies": {
 	"axios": "^0.25.0",
 	"crypto-js": "^4.1.1"
